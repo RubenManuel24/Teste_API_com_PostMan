@@ -1,0 +1,514 @@
+{
+	"info": {
+		"_postman_id": "06c2efca-8239-45fe-b1c7-e6b316134758",
+		"name": "Teste Serverest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30155995"
+	},
+	"item": [
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "sucesso",
+					"item": [
+						{
+							"name": "cadastrar um usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Deve validar mensagem de retorno\", function(){\r",
+											"   pm.expect(pm.response.text()).include(\"Cadastro realizado com sucesso\")\r",
+											"})\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Minga Mauro\",\r\n  \"email\": \"maura@gmail.com\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverest}}usuarios",
+									"host": [
+										"{{serverest}}usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const resposta = pm.response.json();\r",
+											"pm.globals.set(\"token\", resposta.authorization);\r",
+											"\r",
+											"pm.test(\"Response status code é 200\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Deve ter uma mensagem de sucesso\", function (){\r",
+											"    pm.expect(pm.response.text()).include(\"Login realizado com sucesso\")\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"ruben@gmail.com\",\r\n  \"password\": \"teste\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverest}}login",
+									"host": [
+										"{{serverest}}login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "sem sucesso",
+					"item": [
+						{
+							"name": "login usuário com senha ou email invalido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 200\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Deve ter uma mensagem sem sucesso\", function (){\r",
+											"    pm.expect(pm.response.text()).include(\"Email e/ou senha inválidos\")\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"aaaa@gmail.com\",\r\n  \"password\": \"teste\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverest}}login",
+									"host": [
+										"{{serverest}}login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cadastrar usuário com email já cadastrado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Deve validar mensagem de retorno\", function(){\r",
+											"   pm.expect(pm.response.text()).include(\"Este email já está sendo usado\")\r",
+											"})\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Ruben Manuel\",\r\n  \"email\": \"ruben@gmail.com\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverest}}usuarios",
+									"host": [
+										"{{serverest}}usuarios"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "produtos",
+			"item": [
+				{
+					"name": "sucesso",
+					"item": [
+						{
+							"name": "cadastrar produtos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 201\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Deve ter uma mensagem de sucesso\", function(){\r",
+											"    pm.expect(pm.response.text()).include(\"Cadastro realizado com sucesso\")\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Chapeu\",\r\n  \"preco\": 1000,\r\n  \"descricao\": \"Veículo\",\r\n  \"quantidade\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverest}}produtos",
+									"host": [
+										"{{serverest}}produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listar produto",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Deve validar a propriedade produtos\", function(){\r",
+											"    pm.expect(pm.response.json()).to.have.property(\"produtos\")\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serverest}}produtos",
+									"host": [
+										"{{serverest}}produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editar produto",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 200\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Deve ter uma mensagem de sucesso\", function () {\r",
+											"  pm.expect(pm.response.text()).include(\"Registro alterado com sucesso\")\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Chinela 2\",\r\n    \"preco\": 1000,\r\n    \"descricao\": \"Veículo\",\r\n    \"quantidade\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverest}}produtos/SfKHomicSnwicQbS",
+									"host": [
+										"{{serverest}}produtos"
+									],
+									"path": [
+										"SfKHomicSnwicQbS"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletar produto",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 200\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    pm.expect(pm.response.text()).include(\"Registro excluído com sucesso\")\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serverest}}produtos/IaHptlLdEn3zbYU2",
+									"host": [
+										"{{serverest}}produtos"
+									],
+									"path": [
+										"IaHptlLdEn3zbYU2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "sem sucesso",
+					"item": [
+						{
+							"name": "cadastrar produto já existente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 400\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Deve ter uma mensagem de sucesso\", function(){\r",
+											"    pm.expect(pm.response.text()).include(\"Já existe produto com esse nome\")\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Bicicleta\",\r\n  \"preco\": 1000,\r\n  \"descricao\": \"Veículo\",\r\n  \"quantidade\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverest}}produtos",
+									"host": [
+										"{{serverest}}produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletar produto que faz parte do carrinho",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code é 400\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    pm.expect(pm.response.text()).include(\"Não é permitido excluir produto que faz parte de carrinho\")\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serverest}}produtos/K6leHdftCeOJj8BJ",
+									"host": [
+										"{{serverest}}produtos"
+									],
+									"path": [
+										"K6leHdftCeOJj8BJ"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
